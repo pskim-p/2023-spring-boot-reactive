@@ -7,12 +7,12 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 
 @EnableReactiveMongoRepositories
 @SpringBootApplication
-public class Application extends AbstractReactiveMongoConfiguration {
+public class ReactiveBootApplication extends AbstractReactiveMongoConfiguration {
 
     private static final String MONGO_DB_NAME = "mydb";
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(ReactiveBootApplication.class, args);
     }
 
     @Override

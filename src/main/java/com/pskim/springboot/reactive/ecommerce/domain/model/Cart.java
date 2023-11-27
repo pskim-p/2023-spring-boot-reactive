@@ -3,6 +3,7 @@ package com.pskim.springboot.reactive.ecommerce.domain.model;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -11,8 +12,10 @@ public class Cart {
     private @Id String id;
     private List<CartItem> cartItems;
 
+    private Cart(){} // used by mongodb connector
+
     public Cart(String id) {
-        this(id, List.of());
+        this(id, new ArrayList<>());
     }
 
     public Cart(String id, List<CartItem> cartItems) {
