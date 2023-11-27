@@ -28,9 +28,11 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.1.4'
-	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.2'
-	implementation 'org.mongodb:mongodb-driver-sync:4.10.2'
+	// https://stackoverflow.com/questions/74734106/how-to-use-embedded-mongodb-with-springboot-v3-0-0
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive:3.2.0'
+	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.2'
+	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.9.3'
+	implementation 'org.mongodb:mongodb-driver-sync:4.11.1'
 }
 
 tasks.named('test') {
