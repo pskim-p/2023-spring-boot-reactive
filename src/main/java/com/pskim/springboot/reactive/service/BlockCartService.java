@@ -1,3 +1,4 @@
+
 package com.pskim.springboot.reactive.service;
 
 import com.pskim.springboot.reactive.ecommerce.domain.model.Cart;
@@ -10,9 +11,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.logging.Level;
 
+/***
+ * service for blockhound test
+ */
 @RequiredArgsConstructor
 @Service
-public class CartService {
+public class BlockCartService {
 
     private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
@@ -30,27 +34,23 @@ public class CartService {
     }
 
     public Mono<Cart> addToCart(String cartId, String itemId) {
-        return this.cartRepository.findById(cartId)
-                .log("foundCart", Level.FINE)
+        Cart myCart = this.cartRepository.findById(cartId)
                 .defaultIfEmpty(new Cart(cartId))
-                .log("emptyCart")
-                .flatMap(cart -> cart.getCartItems().stream()
+                .block();
+
+        return myCart.getCartItems().stream()
                         .filter(cartItem -> cartItem.getItem().getId().equals(itemId))
                         .findAny()
                         .map(cartItem -> {
                             cartItem.increment();
-                            return Mono.just(cart).log("newCartItem");
+                            return Mono.just(myCart);
                         })
                         .orElseGet(() -> this.itemRepository.findById(itemId)
-                                .log("fetchedItem")
                                 .map(CartItem::new)
-                                .log("cartItem")
                                 .map(cartItem -> {
-                                    cart.getCartItems().add(cartItem);
-                                    return cart;
-                                }))).log("addedCartItem")
-                .log("cartWithAnotherItem")
-                .flatMap(this.cartRepository::save)
-                .log("savedCart");
+                                    myCart.getCartItems().add(cartItem);
+                                    return myCart;
+                                }))
+                .flatMap(this.cartRepository::save);
     }
 }

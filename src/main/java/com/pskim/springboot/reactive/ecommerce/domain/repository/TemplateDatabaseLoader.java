@@ -15,9 +15,15 @@ public class TemplateDatabaseLoader {
 
     @Bean
     CommandLineRunner initialize() {
-        return args -> {
-            itemRepository.save(new Item("alarmClock", 19.99)).subscribe();
-            itemRepository.save(new Item("smart-TV-tray", 244.99)).subscribe();
-        };
+        return args -> itemRepository.findAll()
+                .count()
+                .subscribe(
+                        size -> {
+                            if (size <= 0) {
+                                itemRepository.save(new Item("alarmClock", 19.99)).subscribe();
+                                itemRepository.save(new Item("smart-TV-tray", 244.99)).subscribe();
+                            }
+                        }
+                );
     }
 }

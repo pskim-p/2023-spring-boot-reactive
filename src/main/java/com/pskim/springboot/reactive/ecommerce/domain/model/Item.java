@@ -2,10 +2,12 @@ package com.pskim.springboot.reactive.ecommerce.domain.model;
 
 import com.mongodb.client.model.geojson.Point;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
+@Accessors(chain = true)
 @Data
 public class Item {
     private @Id String id;

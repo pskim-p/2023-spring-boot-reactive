@@ -18,6 +18,10 @@ public class InventoryService {
     private final ItemRepository itemRepository;
     private final ReactiveFluentMongoOperations reactiveFluentMongoOperations;
 
+
+    public Flux<Item> findAll(){
+        return itemRepository.findAll();
+    }
     public Flux<Item> searchByExample(String name, String description, boolean useAnd) {
         Item item = new Item(name, 0.0, description);
 
