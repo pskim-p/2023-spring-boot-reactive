@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'application'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
@@ -9,6 +10,10 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
+}
+
+application {
+	applicationDefaultJvmArgs = ['-XX:+AllowRedefinitionToAddDeleteMethods']
 }
 
 configurations {
@@ -21,9 +26,17 @@ repositories {
 	mavenCentral()
 }
 
+bootRun {
+	// Use Spring Boot DevTool only when we run Gradle bootRun task
+	classpath = sourceSets.main.runtimeClasspath + configurations.developmentOnly
+	sourceResources sourceSets.main
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -33,6 +46,9 @@ dependencies {
 	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.9.2'
 	implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.9.3'
 	implementation 'org.mongodb:mongodb-driver-sync:4.11.1'
+
+	implementation 'io.projectreactor.tools:blockhound:1.0.8.RELEASE'
+
 }
 
 tasks.named('test') {
